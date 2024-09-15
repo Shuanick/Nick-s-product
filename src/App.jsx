@@ -18,7 +18,7 @@ import "./App.css";
 import Home from "./home.jsx";
 import Message from "./message.jsx";
 import Bell from "./bell.jsx";
-import Post from "./post.jsx";
+import Postpage from "./postpage.jsx";
 
 function App() {
   const [selectedIcon, setSelectedIcon] = useState("home");
@@ -29,6 +29,8 @@ function App() {
   const [showNicky, setShowNicky] = useState(true);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+
 
   const navigate = useNavigate();
   const modal1Ref = useRef();
@@ -68,13 +70,13 @@ function App() {
   });
 
   const handleModalClose = (event) => {
-    if (modal1Ref.current && !modal1Ref.current.contains(event.target)) {
+    if (event && modal1Ref.current && !modal1Ref.current.contains(event.target)) {
       if (isModalOpen) {
         setIsModalOpen(false);
       }
     }
     if (
-      searchModalRef.current &&
+      event && searchModalRef.current &&
       !searchModalRef.current.contains(event.target)
     ) {
       if (isSearchOpen) {
@@ -82,12 +84,16 @@ function App() {
         setShowNicky(true);
       }
     }
-    if (uploadRef.current && !uploadRef.current.contains(event.target)) {
+    if (event && uploadRef.current && !uploadRef.current.contains(event.target)) {
       if (isImageUploaded) {
         cancelImage();
       }
     }
   };
+
+  const resetImage = ()=>{
+    setImageFile("");
+  }
 
   const handleClear = () => {
     setSearchText("");
@@ -95,6 +101,7 @@ function App() {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0]; 
+    setImageFile(file);
     if (file) {
       const reader = new FileReader();
       const url = URL.createObjectURL(file);
@@ -218,7 +225,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/message" element={<Message />} />
         <Route path="/notification" element={<Bell />} />
-        <Route path="/post" element={<Post imagePreview={imagePreview} handleModalClose={handleModalClose} isImageUploaded={isImageUploaded}/>} />
+        <Route path="/post" element={<Postpage imagePreview={imagePreview} handleModalClose={handleModalClose} isImageUploaded={isImageUploaded} imageFile={imageFile} resetImage={resetImage}/>} />
       </Routes>
       {isModalOpen && (
         <div className="modal1" ref={modal1Ref}>
