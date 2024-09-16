@@ -31,19 +31,7 @@ function Postpage({ imagePreview, handleModalClose,imageFile,resetImage }) {
           resetImage();
         }
       } catch (error) {
-        if (error.response) {
-          // 服务器返回了一个状态码，超出了2xx的范围
-          console.error("Error response:", error.response.data);
-          console.error("Error status:", error.response.status);
-          console.error("Error headers:", error.response.headers);
-        } else if (error.request) {
-          // 请求已经发出，但没有收到响应
-          console.error("Error request:", error.request);
-        } else {
-          // 发生了其他错误
-          console.error("Error message:", error.message);
-        }
-        console.error("Error config:", error.config);
+        console.error("Error uploading image:", error);
         return;
       }
     }
